@@ -39,7 +39,8 @@
         "test",
         "config",
         "wip",
-        "init"
+        "init",
+        "ui"
       ]
     ]
   }
