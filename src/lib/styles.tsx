@@ -42,8 +42,9 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
       : Color(background(props)(props)).lighten(0.2).toString()};
   color: ${props => Color(color(props)(props)).fade(0.1).toString()};
   z-index: 667;
-  padding: 40px 20px;
+  padding: 20px 25px;
   box-sizing: border-box;
+  overflow: hidden;
   &.regular {
     left: ${({ width }) => `calc(50% - (${width} / 2))`};
     top: ${({ height }) => `calc(50% - (${height} / 2))`};
@@ -64,8 +65,8 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
 `
 
 export const DialogContent = styled(motion.div)`
-  margin-top: 32px;
-  height: calc(100% - 20px);
+  margin-top: 30px;
+  height: calc(100% - 50px);
   overflow-x: hidden;
   overflow-y: auto;
 `
@@ -158,4 +159,24 @@ export const Line = styled.hr`
   background: gray;
   border: 4px solid gray;
   border-radius: 100px;
+`
+
+export const Title = styled.h1<ICommonProps>`
+  color: ${props =>
+    Color(color(props)(props)).grayscale().fade(0.2).toString()};
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  padding: 3px 0;
+`
+export const SubTitle = styled.h2<ICommonProps>`
+  color: ${props =>
+    Color(color(props)(props)).grayscale().lighten(0.4).toString()};
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: normal;
+  letter-spacing: -0.6px;
+  font-size: 16px;
+  padding: 3px 0;
 `

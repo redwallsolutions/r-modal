@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, fireEvent, screen, cleanup } from '@testing-library/react'
 import Modal from '../index'
+import { App } from '../../app'
 beforeEach(cleanup)
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -23,5 +24,13 @@ describe('r-modal component', () => {
     render(<Modal onClose={onClose} />)
     fireEvent.click(screen.getByTestId('overlay'))
     expect(onClose).toBeCalled()
+  })
+  it('should should open modal after click open button', async () => {
+    render(<App />)
+    const button = screen.getByText('Show', { trim: true })
+    fireEvent.click(button)
+    const modalTitle = await screen.findByText('Cadastrar novo item')
+    expect(modalTitle).toBeDefined()
+    expect(modalTitle.textContent).toBe('Cadastrar novo item')
   })
 })

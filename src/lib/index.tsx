@@ -22,6 +22,8 @@ import {
   DialogContent,
   MDialog,
   Overlay,
+  Title,
+  SubTitle,
 } from './styles'
 
 const defaultTheme = {
@@ -46,6 +48,7 @@ interface Props extends ICommonProps {
   children?: any
   fullscreen?: boolean
   title?: string | ReactNode
+  subTitle?: string | ReactNode
   onClose(): void
 }
 
@@ -55,6 +58,8 @@ export default function ({
   appearance = 'default',
   theme,
   fullscreen = false,
+  title = null,
+  subTitle = null,
 }: Props) {
   usePortalContainer()
   const [innerFullscreen, setInnerFullscreen] = useState(fullscreen)
@@ -78,6 +83,22 @@ export default function ({
       }
     }
   }
+  const titleToApply =
+    title && typeof title === 'string' ? (
+      <Title theme={themeToApply} appearance={appearance}>
+        {title}
+      </Title>
+    ) : (
+      title
+    )
+  const subTitleToApply =
+    subTitle && typeof subTitle === 'string' ? (
+      <SubTitle theme={themeToApply} appearance={appearance}>
+        {subTitle}
+      </SubTitle>
+    ) : (
+      subTitle
+    )
   const ResponsiveDialog = ({ children }: any) => {
     return isWide ? (
       <Dialog
@@ -91,6 +112,8 @@ export default function ({
         appearance={appearance}
         theme={themeToApply}
       >
+        {titleToApply}
+        {subTitleToApply}
         <DialogContent>{children}</DialogContent>
       </Dialog>
     ) : (
@@ -105,6 +128,8 @@ export default function ({
           theme={themeToApply}
           height="400px"
         >
+          {titleToApply}
+          {subTitleToApply}
           <DialogContent layout layoutId="mcontent" style={{ marginTop: 0 }}>
             {children}
           </DialogContent>
