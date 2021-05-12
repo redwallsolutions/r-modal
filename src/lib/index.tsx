@@ -1,6 +1,6 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import { AnimateSharedLayout } from 'framer-motion'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useMedia } from 'react-use'
 import { ThemeContext } from 'styled-components'
@@ -45,6 +45,7 @@ function usePortalContainer(): void {
 interface Props extends ICommonProps {
   children?: any
   fullscreen?: boolean
+  title?: string | ReactNode
   onClose(): void
 }
 
@@ -123,8 +124,17 @@ export default function ({
             <ResponsiveDialog>
               {isWide && (
                 <Controllers>
-                  <Fullscreen onClick={toggleFullScreen} />
-                  <Close onClick={onClose} variants={dialogVariant} />
+                  <Fullscreen
+                    onClick={toggleFullScreen}
+                    appearance={appearance}
+                    theme={themeToApply}
+                  />
+                  <Close
+                    onClick={onClose}
+                    variants={dialogVariant}
+                    appearance={appearance}
+                    theme={themeToApply}
+                  />
                 </Controllers>
               )}
               {children}

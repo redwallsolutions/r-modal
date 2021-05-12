@@ -1,11 +1,17 @@
-// import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
+import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
-// const theming = createThemeWithAppearance()
+import Color from 'color'
+const theming = createThemeWithAppearance()
 const isLight = (props: ICommonProps) =>
   props.theme && props.theme.mode === 'light'
-
+const background = (props: ICommonProps) => {
+  return theming(props).contrast
+}
+const color = (props: ICommonProps) => {
+  return theming(props).color
+}
 export const Container = styled(motion.div)`
   z-index: 666;
   position: fixed;
@@ -30,7 +36,11 @@ interface IDialog {
 
 export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
   position: fixed;
-  background: ${props => (isLight(props) ? '#f2f2f2' : '#0b0b0b')};
+  background: ${props =>
+    isLight(props)
+      ? background(props)
+      : Color(background(props)(props)).lighten(0.2).toString()};
+  color: ${props => Color(color(props)(props)).fade(0.1).toString()};
   z-index: 667;
   padding: 40px 20px;
   box-sizing: border-box;
@@ -67,7 +77,11 @@ export const MDialog = styled(motion.div)<ICommonProps & IMDialog>`
   left: 0;
   bottom: 0;
   width: 100%;
-  background: ${props => (isLight(props) ? '#f2f2f2' : '#0b0b0b')};
+  background: ${props =>
+    isLight(props)
+      ? background(props)
+      : Color(background(props)(props)).lighten(0.2).toString()};
+  color: ${props => Color(color(props)(props)).fade(0.1).toString()};
   padding: 20px;
   padding-top: 0px;
   position: fixed;
@@ -89,7 +103,7 @@ export const Controllers = styled(motion.div)`
   padding: 20px;
 `
 
-export const Icon = styled(motion.span)`
+export const Icon = styled(motion.span)<ICommonProps>`
   cursor: pointer;
   width: 30px;
   height: 30px;
@@ -97,6 +111,17 @@ export const Icon = styled(motion.span)`
   display: inline-block;
   box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.15);
   margin: 0 5px;
+  padding: 3px;
+  box-sizing: border-box;
+  background: ${props =>
+    Color(background(props)(props)).lighten(0.8).toString()};
+  svg {
+    g,
+    path {
+      color: ${props => Color(color(props)(props)).lighten(0.1).toString()};
+      fill: ${props => Color(color(props)(props)).lighten(0.1).toString()};
+    }
+  }
 `
 
 export interface ILineContainer {
@@ -109,7 +134,11 @@ export const LineContainer = styled(motion.div)<ICommonProps & ILineContainer>`
   width: 100%;
   height: calc(${({ height }) => height});
   cursor: grab;
-  background: ${props => (isLight(props) ? '#f2f2f2' : '#0b0b0b')};
+  background: ${props =>
+    isLight(props)
+      ? background(props)
+      : Color(background(props)(props)).lighten(0.2).toString()};
+  color: ${props => Color(color(props)(props)).fade(0.1).toString()};
   border-radius: 19px 19px 0 0;
   &.fullscreen {
     top: 0;

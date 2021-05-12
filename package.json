@@ -10,13 +10,9 @@
   "scripts": {
     "test": "jest --config jest.config.ts",
     "start": "rimraf demo/output && parcel demo/index.html -d demo/output",
-    "build": "rimraf dist && tsc",
-    "docz:dev": "docz dev",
-    "docz:build": "rimraf demo/output && docz build",
-    "predeploy": "yarn docz:build",
-    "deploy": "gh-pages -d demo/output"
+    "build": "rimraf dist && tsc"
   },
-  "repository": "https://github.com/redwallsolutions/m-modal-component-module",
+  "repository": "https://github.com/redwallsolutions/r-modal.git",
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
@@ -37,7 +33,6 @@
     "babel-preset-react-app": "^9.0.2",
     "commitizen": "^4.2.3",
     "cz-emoji": "^1.3.1",
-    "docz": "^2.0.0-rc.75",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
