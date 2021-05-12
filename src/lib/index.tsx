@@ -1,5 +1,5 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { AnimateSharedLayout } from 'framer-motion'
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useMedia } from 'react-use'
@@ -115,7 +115,11 @@ export default function ({
     ? createPortal(
         <AnimateSharedLayout>
           <Container {...motionProps} variants={containerVariant}>
-            <Overlay variants={overlayVariant} onClick={onClose} />
+            <Overlay
+              variants={overlayVariant}
+              onClick={onClose}
+              data-testid="overlay"
+            />
             <ResponsiveDialog>
               {isWide && (
                 <Controllers>

@@ -17,5 +17,14 @@
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
   },
-  "exclude": ["src/index.tsx", "src/docs/*"]
+  "exclude": [
+    "src/index.tsx",
+    "src/docs/*",
+    "exclude",
+    "node_modules",
+    "dist",
+    "__tests__",
+    "jest.config.ts",
+    "jest.config.*.ts"
+  ]
 }

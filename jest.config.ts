@@ -9,7 +9,7 @@ export default {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/*.spec.ts'],
+  testEnvironment: 'jsdom',
+  testMatch: ['**/__tests__/**/*.spec.(ts|tsx)'],
   roots: ['<rootDir>/src'],
 }

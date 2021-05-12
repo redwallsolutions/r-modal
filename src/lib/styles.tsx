@@ -1,8 +1,8 @@
-import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
+// import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
-const theming = createThemeWithAppearance()
+// const theming = createThemeWithAppearance()
 const isLight = (props: ICommonProps) =>
   props.theme && props.theme.mode === 'light'
 

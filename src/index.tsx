@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion'
 import React, { useState } from 'react'
 import { render } from 'react-dom'
 import Modal from './lib'
-function App() {
+export function App() {
   const [showModal, setShowModal] = useState(false)
   return (
     <>
