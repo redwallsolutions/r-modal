@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest --config jest.config.ts",
     "start": "rimraf demo/output && parcel demo/index.html -d demo/output",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc && cp -r dist/lib/* dist/ && rimraf dist/lib"
   },
   "repository": "https://github.com/redwallsolutions/r-modal.git",
   "publishConfig": {
