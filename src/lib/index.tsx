@@ -150,6 +150,21 @@ export default function ({
                 >
                   {titleToApply}
                   {subTitleToApply}
+                  {isWide && (
+                    <Controllers layout layoutId="controllers">
+                      <Fullscreen
+                        onClick={toggleFullScreen}
+                        appearance={appearance}
+                        theme={themeToApply}
+                      />
+                      <Close
+                        onClick={close}
+                        variants={dialogVariant}
+                        appearance={appearance}
+                        theme={themeToApply}
+                      />
+                    </Controllers>
+                  )}
                   <DialogContent isWide={isWide}>{innerChildren}</DialogContent>
                 </Dialog>
               )}
@@ -171,21 +186,6 @@ export default function ({
                 </MDialog>
               )}
             >
-              {isWide && (
-                <Controllers layout layoutId="controllers">
-                  <Fullscreen
-                    onClick={toggleFullScreen}
-                    appearance={appearance}
-                    theme={themeToApply}
-                  />
-                  <Close
-                    onClick={close}
-                    variants={dialogVariant}
-                    appearance={appearance}
-                    theme={themeToApply}
-                  />
-                </Controllers>
-              )}
               {children}
             </ResponsiveDialog>
             {!isWide && (

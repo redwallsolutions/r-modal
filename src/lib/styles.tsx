@@ -72,8 +72,9 @@ const noscroll = css`
 `
 
 export const DialogContent = styled(motion.div)<any>`
+  position: relative;
   margin-top: 30px;
-  height: calc(100% - 50px);
+  height: 80%;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0 2px;
