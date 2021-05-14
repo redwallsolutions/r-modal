@@ -23,6 +23,7 @@ function App() {
       <GlobalS appearance="default" theme={theme} />
       <button
         onClick={() => {
+          console.log('toggled')
           setShowModal(state => !state)
         }}
       >

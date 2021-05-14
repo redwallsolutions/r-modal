@@ -85,6 +85,13 @@ export default function ({
   const toggleFullScreen = () => {
     setInnerFullscreen(state => !state)
   }
+  const isClosingRef = useRef<boolean>(false)
+  const close = () => {
+    if (!isClosingRef.current) {
+      isClosingRef.current = true
+      onClose()
+    }
+  }
   const dragStartPointer = useRef<number | null>(null)
   const mobileDragStart = (e: PointerEvent) => {
     dragStartPointer.current = e.y
@@ -122,7 +129,7 @@ export default function ({
           <Container {...motionProps} variants={containerVariant}>
             <Overlay
               variants={overlayVariant}
-              onClick={onClose}
+              onClick={close}
               data-testid="overlay"
             />
             <ResponsiveDialog
@@ -172,7 +179,7 @@ export default function ({
                     theme={themeToApply}
                   />
                   <Close
-                    onClick={onClose}
+                    onClick={close}
                     variants={dialogVariant}
                     appearance={appearance}
                     theme={themeToApply}
