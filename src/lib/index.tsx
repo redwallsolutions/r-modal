@@ -1,6 +1,12 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import { AnimateSharedLayout } from 'framer-motion'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { useMedia } from 'react-use'
 import { ThemeContext } from 'styled-components'
@@ -42,6 +48,17 @@ function usePortalContainer(): void {
     }
     rerender(1)
   }, [])
+}
+
+interface RDialog {
+  dialog(props: { children: any }): ReactElement
+  mDialog(props: { children: any }): ReactElement
+  isWide: boolean
+  children: ReactNode
+}
+
+function ResponsiveDialog({ dialog, mDialog, isWide, children }: RDialog) {
+  return isWide ? dialog({ children }) : mDialog({ children })
 }
 
 interface Props extends ICommonProps {
@@ -99,44 +116,6 @@ export default function ({
     ) : (
       subTitle
     )
-  const ResponsiveDialog = ({ children }: any) => {
-    return isWide ? (
-      <Dialog
-        layoutId="dialog"
-        className={innerFullscreen ? 'fullscreen' : 'regular'}
-        width="650px"
-        height="480px"
-        variants={
-          innerFullscreen ? { hide: dialogVariant.hide } : dialogVariant
-        }
-        appearance={appearance}
-        theme={themeToApply}
-      >
-        {titleToApply}
-        {subTitleToApply}
-        <DialogContent>{children}</DialogContent>
-      </Dialog>
-    ) : (
-      <>
-        <MDialog
-          layout
-          layoutId="mdialog"
-          className={innerFullscreen ? 'fullscreen' : 'regular'}
-          custom={{ initialY: 400, hideY: 400 }}
-          variants={innerFullscreen ? {} : mDialogVariant}
-          appearance={appearance}
-          theme={themeToApply}
-          height="400px"
-        >
-          {titleToApply}
-          {subTitleToApply}
-          <DialogContent layout layoutId="mcontent" style={{ marginTop: 0 }}>
-            {children}
-          </DialogContent>
-        </MDialog>
-      </>
-    )
-  }
   const render = portalContainer
     ? createPortal(
         <AnimateSharedLayout>
@@ -146,9 +125,47 @@ export default function ({
               onClick={onClose}
               data-testid="overlay"
             />
-            <ResponsiveDialog>
+            <ResponsiveDialog
+              isWide={isWide}
+              dialog={({ children: innerChildren }) => (
+                <Dialog
+                  layoutId="dialog"
+                  className={innerFullscreen ? 'fullscreen' : 'regular'}
+                  width="650px"
+                  height="480px"
+                  variants={
+                    innerFullscreen
+                      ? { hide: dialogVariant.hide }
+                      : dialogVariant
+                  }
+                  appearance={appearance}
+                  theme={themeToApply}
+                >
+                  {titleToApply}
+                  {subTitleToApply}
+                  <DialogContent isWide={isWide}>{innerChildren}</DialogContent>
+                </Dialog>
+              )}
+              mDialog={({ children: innerChildren }) => (
+                <MDialog
+                  layoutId="mdialog"
+                  className={innerFullscreen ? 'fullscreen' : 'regular'}
+                  custom={{ initialY: 400, hideY: 400 }}
+                  variants={innerFullscreen ? {} : mDialogVariant}
+                  appearance={appearance}
+                  theme={themeToApply}
+                  height="400px"
+                >
+                  {titleToApply}
+                  {subTitleToApply}
+                  <DialogContent style={{ marginTop: 0 }} isWide={isWide}>
+                    {innerChildren}
+                  </DialogContent>
+                </MDialog>
+              )}
+            >
               {isWide && (
-                <Controllers>
+                <Controllers layout layoutId="controllers">
                   <Fullscreen
                     onClick={toggleFullScreen}
                     appearance={appearance}

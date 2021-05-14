@@ -35,12 +35,10 @@ function App() {
               setShowModal(false)
             }}
             title="Cadastrar novo item"
+            subTitle="Cadastre mais e mais items sem parar...."
           >
             <div style={{ height: 500 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-              facilisis diam nulla, a scelerisque enim porta rutrum. Donec a
-              nulla in metus interdum auctor egestas vel velit. Suspendisse
-              potenti. Pellentesque non urna orci. aaa
+              <input />
               <button onClick={toggleSecondModal}>Toggle Second Modal</button>
               <button
                 onClick={() => {
@@ -54,30 +52,34 @@ function App() {
               >
                 Toggle Darkmode
               </button>
-              {secondModal && (
-                <Modal
-                  onClose={() => setSecondModal(false)}
-                  title={
-                    <div style={{ width: 20, height: 20, background: 'blue' }}>
-                      oi
-                    </div>
-                  }
-                  subTitle="Gerencie todos os menus do seu estabelecimento."
-                >
-                  <button
-                    onClick={() => {
-                      setTheme(state => {
-                        if (state.mode === 'light') {
-                          return { mode: 'dark' }
-                        }
-                        return { mode: 'light' }
-                      })
-                    }}
+              <AnimatePresence>
+                {secondModal && (
+                  <Modal
+                    onClose={() => setSecondModal(false)}
+                    title={
+                      <div
+                        style={{ width: 20, height: 20, background: 'blue' }}
+                      >
+                        oi
+                      </div>
+                    }
+                    subTitle="Gerencie todos os menus do seu estabelecimento."
                   >
-                    Toggle Darkmode
-                  </button>
-                </Modal>
-              )}
+                    <button
+                      onClick={() => {
+                        setTheme(state => {
+                          if (state.mode === 'light') {
+                            return { mode: 'dark' }
+                          }
+                          return { mode: 'light' }
+                        })
+                      }}
+                    >
+                      Toggle Darkmode
+                    </button>
+                  </Modal>
+                )}
+              </AnimatePresence>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
               facilisis diam nulla, a scelerisque enim porta rutrum. Donec a
               nulla in metus interdum auctor egestas vel velit. Suspendisse

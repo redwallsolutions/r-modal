@@ -1,5 +1,5 @@
 import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { motion } from 'framer-motion'
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import Color from 'color'
@@ -64,11 +64,20 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
   }
 `
 
-export const DialogContent = styled(motion.div)`
+const noscroll = css`
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+`
+
+export const DialogContent = styled(motion.div)<any>`
   margin-top: 30px;
   height: calc(100% - 50px);
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 0 2px;
+  ${({ isWide }) => !isWide && noscroll};
 `
 export interface IMDialog {
   height: string
@@ -162,8 +171,7 @@ export const Line = styled.hr`
 `
 
 export const Title = styled.h1<ICommonProps>`
-  color: ${props =>
-    Color(color(props)(props)).grayscale().fade(0.2).toString()};
+  color: ${props => (isLight(props) ? '#222' : '#ddd')};
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
@@ -171,8 +179,7 @@ export const Title = styled.h1<ICommonProps>`
   padding: 3px 0;
 `
 export const SubTitle = styled.h2<ICommonProps>`
-  color: ${props =>
-    Color(color(props)(props)).grayscale().lighten(0.4).toString()};
+  color: ${props => (isLight(props) ? '#3f3f3f' : '#c7c7c7')};
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: normal;
