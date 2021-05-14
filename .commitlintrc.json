@@ -40,7 +40,8 @@
         "config",
         "wip",
         "init",
-        "ui"
+        "ui",
+        "prune"
       ]
     ]
   }

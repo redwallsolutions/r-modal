@@ -1,5 +1,5 @@
 import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import Color from 'color'
@@ -64,13 +64,6 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
   }
 `
 
-const noscroll = css`
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
-`
-
 export const DialogContent = styled(motion.div)<any>`
   position: relative;
   margin-top: 30px;
@@ -78,7 +71,10 @@ export const DialogContent = styled(motion.div)<any>`
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0 2px;
-  ${({ isWide }) => !isWide && noscroll};
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 `
 export interface IMDialog {
   height: string
