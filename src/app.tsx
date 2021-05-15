@@ -45,7 +45,7 @@ function App() {
                 onClick={() => {
                   setTheme(state => {
                     if (state.mode === 'light') {
-                      return { mode: 'dark' }
+                      return { mode: 'dark', defaultDark: 'limegreen' }
                     }
                     return { mode: 'light' }
                   })

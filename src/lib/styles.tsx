@@ -40,7 +40,7 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
     isLight(props)
       ? background(props)
       : Color(background(props)(props)).lighten(0.2).toString()};
-  color: ${props => Color(color(props)(props)).fade(0.1).toString()};
+  color: ${props => (isLight(props) ? '#333' : '#ccc')};
   z-index: 667;
   padding: 20px 25px;
   box-sizing: border-box;
@@ -88,7 +88,7 @@ export const MDialog = styled(motion.div)<ICommonProps & IMDialog>`
     isLight(props)
       ? background(props)
       : Color(background(props)(props)).lighten(0.2).toString()};
-  color: ${props => Color(color(props)(props)).fade(0.1).toString()};
+  color: ${props => (isLight(props) ? '#333' : '#ccc')};
   padding: 20px;
   padding-top: 0px;
   position: fixed;
