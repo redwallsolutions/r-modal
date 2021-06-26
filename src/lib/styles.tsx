@@ -17,16 +17,14 @@ export const Container = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100vw;
 `
 export const Overlay = styled(motion.div)`
   background: rgb(0, 0, 0);
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 `
 
 interface IDialog {

@@ -1,5 +1,4 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
-import { AnimateSharedLayout } from 'framer-motion'
 import React, {
   ReactElement,
   ReactNode,
@@ -11,7 +10,6 @@ import { createPortal } from 'react-dom'
 import { useMedia } from 'react-use'
 import { ThemeContext } from 'styled-components'
 import {
-  containerVariant,
   dialogVariant,
   mDialogLineVariant,
   mDialogVariant,
@@ -125,85 +123,81 @@ export default function ({
     )
   const render = portalContainer
     ? createPortal(
-        <AnimateSharedLayout>
-          <Container {...motionProps} variants={containerVariant}>
-            <Overlay
-              variants={overlayVariant}
-              onClick={close}
-              data-testid="overlay"
-            />
-            <ResponsiveDialog
-              isWide={isWide}
-              dialog={({ children: innerChildren }) => (
-                <Dialog
-                  layoutId="dialog"
-                  className={innerFullscreen ? 'fullscreen' : 'regular'}
-                  width="650px"
-                  height="480px"
-                  variants={
-                    innerFullscreen
-                      ? { hide: dialogVariant.hide }
-                      : dialogVariant
-                  }
-                  appearance={appearance}
-                  theme={themeToApply}
-                >
-                  {titleToApply}
-                  {subTitleToApply}
-                  {isWide && (
-                    <Controllers layout layoutId="controllers">
-                      <Fullscreen
-                        onClick={toggleFullScreen}
-                        appearance={appearance}
-                        theme={themeToApply}
-                      />
-                      <Close
-                        onClick={close}
-                        variants={dialogVariant}
-                        appearance={appearance}
-                        theme={themeToApply}
-                      />
-                    </Controllers>
-                  )}
-                  <DialogContent isWide={isWide}>{innerChildren}</DialogContent>
-                </Dialog>
-              )}
-              mDialog={({ children: innerChildren }) => (
-                <MDialog
-                  layoutId="mdialog"
-                  className={innerFullscreen ? 'fullscreen' : 'regular'}
-                  custom={{ initialY: 400, hideY: 400 }}
-                  variants={innerFullscreen ? {} : mDialogVariant}
-                  appearance={appearance}
-                  theme={themeToApply}
-                  height="400px"
-                >
-                  {titleToApply}
-                  {subTitleToApply}
-                  <DialogContent style={{ marginTop: 0 }} isWide={isWide}>
-                    {innerChildren}
-                  </DialogContent>
-                </MDialog>
-              )}
-            >
-              {children}
-            </ResponsiveDialog>
-            {!isWide && (
-              <Line
-                custom={{ initialY: 400, hideY: 400 }}
-                drag="y"
-                dragConstraints={{ top: 0, bottom: 0 }}
-                onDragStart={mobileDragStart}
-                onDragEnd={mobileDragEnd}
-                height={'400px'}
+        <Container {...motionProps}>
+          <Overlay
+            variants={overlayVariant}
+            onClick={close}
+            data-testid="overlay"
+          />
+          <ResponsiveDialog
+            isWide={isWide}
+            dialog={({ children: innerChildren }) => (
+              <Dialog
+                layoutId="dialog"
+                className={innerFullscreen ? 'fullscreen' : 'regular'}
+                width="650px"
+                height="480px"
+                variants={
+                  innerFullscreen ? { hide: dialogVariant.hide } : dialogVariant
+                }
                 appearance={appearance}
                 theme={themeToApply}
-                className={innerFullscreen ? 'fullscreen' : 'regular'}
-                variants={mDialogLineVariant}
-              />
+              >
+                {titleToApply}
+                {subTitleToApply}
+                {isWide && (
+                  <Controllers layout layoutId="controllers">
+                    <Fullscreen
+                      onClick={toggleFullScreen}
+                      appearance={appearance}
+                      theme={themeToApply}
+                    />
+                    <Close
+                      onClick={close}
+                      variants={dialogVariant}
+                      appearance={appearance}
+                      theme={themeToApply}
+                    />
+                  </Controllers>
+                )}
+                <DialogContent isWide={isWide}>{innerChildren}</DialogContent>
+              </Dialog>
             )}
-          </Container>
-        </AnimateSharedLayout>,
+            mDialog={({ children: innerChildren }) => (
+              <MDialog
+                layoutId="mdialog"
+                className={innerFullscreen ? 'fullscreen' : 'regular'}
+                custom={{ initialY: 400, hideY: 400 }}
+                variants={innerFullscreen ? {} : mDialogVariant}
+                appearance={appearance}
+                theme={themeToApply}
+                height="400px"
+              >
+                {titleToApply}
+                {subTitleToApply}
+                <DialogContent style={{ marginTop: 0 }} isWide={isWide}>
+                  {innerChildren}
+                </DialogContent>
+              </MDialog>
+            )}
+          >
+            {children}
+          </ResponsiveDialog>
+          {!isWide && (
+            <Line
+              custom={{ initialY: 400, hideY: 400 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              onDragStart={mobileDragStart}
+              onDragEnd={mobileDragEnd}
+              height={'400px'}
+              appearance={appearance}
+              theme={themeToApply}
+              className={innerFullscreen ? 'fullscreen' : 'regular'}
+              variants={mDialogLineVariant}
+            />
+          )}
+        </Container>,
         portalContainer!,
       )
     : null

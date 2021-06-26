@@ -29,6 +29,7 @@ function App() {
       >
         Show
       </button>
+      {console.log(showModal)}
       <AnimatePresence>
         {showModal && (
           <Modal

@@ -1,21 +1,22 @@
-export const containerVariant = {
-  show: {},
-  hide: {},
-  initial: {},
-}
 export const overlayVariant = {
   show: {
     opacity: 0.3,
     transition: {
       type: 'tween',
-      duration: 0.3,
+      duration: 0.2,
+    },
+    transitionEnd: {
+      display: 'block',
     },
   },
   hide: {
     opacity: 0,
     transition: {
       type: 'tween',
-      duration: 0.3,
+      duration: 0.2,
+    },
+    transitionEnd: {
+      display: 'none',
     },
   },
   initial: {
