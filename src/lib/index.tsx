@@ -1,18 +1,11 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import { useAnimation, useDragControls } from 'framer-motion'
-import React, {
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useEffectOnce, useMedia, useWindowSize } from 'react-use'
+import { useMedia, useWindowSize } from 'react-use'
 import { ThemeContext } from 'styled-components'
 import {
   dialogVariant,
-  mDialogLineVariant,
   mDialogVariant,
   motionProps,
   overlayVariant,
@@ -28,6 +21,7 @@ import {
   Overlay,
   Title,
   SubTitle,
+  Header,
 } from './styles'
 
 const defaultTheme = {
@@ -66,17 +60,21 @@ export default function ({
   fullscreen = false,
   title = null,
   subTitle = null,
-  height = 400,
-  width,
+  height = 500,
+  width = 649,
 }: Props) {
   usePortalContainer()
   const dialogControls = useAnimation()
   const [innerFullscreen, setInnerFullscreen] = useState(fullscreen)
+  const toggleFullscreen = () => {
+    setInnerFullscreen(!innerFullscreen)
+  }
   const themeToApply = theme || React.useContext(ThemeContext) || defaultTheme
   const isWide = useMedia('(min-width: 649px)')
-  const { height: windowHeight } = useWindowSize()
+  const { height: windowHeight, width: windowWidth } = useWindowSize()
   const y = windowHeight - height
-  const contentHeight = (innerFullscreen ? windowHeight : height) - 55
+  const contentHeight =
+    (innerFullscreen ? windowHeight : height) - (isWide ? 95 : 125)
   const dragControls = useDragControls()
   const startDrag = (event: any) => {
     dragControls.start(event, { snapToCursor: false })
@@ -98,7 +96,7 @@ export default function ({
     if (y < dragStartPointer.current! && !innerFullscreen) {
       setInnerFullscreen(true)
     } else if (!innerFullscreen) {
-      onClose()
+      close()
     } else {
       setInnerFullscreen(false)
     }
@@ -109,7 +107,7 @@ export default function ({
       setTimeout(() => {
         dialogControls.start('full')
       }, 50)
-    } else {
+    } else if (!isWide) {
       setTimeout(() => {
         dialogControls.start('show')
       }, 50)
@@ -131,6 +129,16 @@ export default function ({
     ) : (
       subTitle
     )
+  const customMotionValues = useMemo(
+    () => ({
+      y,
+      totalHeight: windowHeight,
+      totalWidth: windowWidth,
+      currentHeight: height,
+      currentWidth: width,
+    }),
+    [windowHeight, windowWidth, height, width],
+  )
   const render = portalContainer
     ? createPortal(
         <Container {...motionProps}>
@@ -140,28 +148,44 @@ export default function ({
             data-testid="overlay"
           />
           <Dialog
+            isWide={isWide}
             appearance={appearance}
             theme={themeToApply}
-            height={windowHeight}
-            width={isWide ? `${width}px` : '100%'}
+            custom={customMotionValues}
             animate={dialogControls}
             variants={isWide ? dialogVariant : mDialogVariant}
-            custom={{ y, height: windowHeight }}
             drag="y"
             dragControls={dragControls}
             dragListener={false}
             onDragStart={mobileDragStart}
             onDragEnd={mobileDragEnd}
-            borderRadius={!isWide ? '25px 25px 0 0' : 'none'}
+            borderRadius={!isWide ? '25px 25px 0 0' : '25px'}
+            height={isWide && !innerFullscreen ? height : windowHeight}
+            width={isWide && !innerFullscreen ? width : windowWidth}
           >
-            <Line onPointerDown={startDrag}>
-              <hr />
-            </Line>
-            <DialogContent height={contentHeight}>
+            <Header isWide={isWide}>
+              {isWide ? (
+                <Controllers>
+                  <Fullscreen
+                    appearance={appearance}
+                    theme={theme}
+                    onClick={toggleFullscreen}
+                  />
+                  <Close
+                    appearance={appearance}
+                    theme={theme}
+                    onClick={close}
+                  />
+                </Controllers>
+              ) : (
+                <Line onPointerDown={startDrag}>
+                  <hr />
+                </Line>
+              )}
               {titleToApply}
               {subTitleToApply}
-              {children}
-            </DialogContent>
+            </Header>
+            <DialogContent height={contentHeight}>{children}</DialogContent>
           </Dialog>
         </Container>,
         portalContainer!,

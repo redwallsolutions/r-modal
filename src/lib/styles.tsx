@@ -1,5 +1,5 @@
 import { createThemeWithAppearance } from '@redwallsolutions/theming-component-module'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { motion } from 'framer-motion'
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
 import Color from 'color'
@@ -28,40 +28,11 @@ export const Overlay = styled(motion.div)`
 `
 
 interface IDialog {
-  width?: number | string
-  height?: number | string
+  width: number
+  height: number
   borderRadius?: string
+  isWide?: boolean
 }
-
-// export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
-//   position: fixed;
-//   background: ${props =>
-//     isLight(props)
-//       ? background(props)
-//       : Color(background(props)(props)).lighten(0.2).toString()};
-//   color: ${props => (isLight(props) ? '#333' : '#ccc')};
-//   z-index: 667;
-//   padding: 20px 25px;
-//   box-sizing: border-box;
-//   overflow: hidden;
-//   &.regular {
-//     left: ${({ width }) => `calc(50% - (${width} / 2))`};
-//     top: ${({ height }) => `calc(50% - (${height} / 2))`};
-//     width: ${({ width }) => width};
-//     height: ${({ height }) => height};
-//     max-width: 700px;
-//     max-height: 500px;
-//     min-width: 480px;
-//     min-height: 480px;
-//     border-radius: 19px;
-//   }
-//   &.fullscreen {
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     height: 100%;
-//   }
-// `
 
 export const DialogContent = styled(motion.div)<any>`
   height: ${props => props.height}px;
@@ -77,10 +48,12 @@ export interface IMDialog {
 }
 
 export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
-  left: 0;
+  left: ${props => (props.isWide ? `calc(50% - ${props.width! / 2}px)` : 0)};
+  top: ${props => (props.isWide ? `calc(50% - ${props.height! / 2}px)` : 0)};
   bottom: 0;
-  width: ${({ width = '100%' }) => width};
+  width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
+  transition: top 0.2s, left 0.2s, height 0.2s, width 0.2s;
   background: ${props =>
     isLight(props)
       ? background(props)
@@ -91,8 +64,8 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
   position: fixed;
   box-sizing: border-box;
   z-index: 667;
-  touch-action: none;
   border-radius: ${({ borderRadius }) => borderRadius};
+  overflow: hidden;
 `
 
 export const Controllers = styled(motion.div)`
@@ -100,6 +73,7 @@ export const Controllers = styled(motion.div)`
   right: 0;
   top: 0;
   padding: 20px;
+  z-index: 2;
 `
 
 export const Icon = styled(motion.span)<ICommonProps>`
@@ -159,4 +133,9 @@ export const SubTitle = styled.h2<ICommonProps>`
   letter-spacing: -0.6px;
   font-size: 16px;
   padding: 3px 0;
+`
+
+export const Header = styled.header<any>`
+  margin: 0;
+  padding: ${props => (props.isWide ? '20px 0 15px 10px' : '0 0 15px 0')};
 `

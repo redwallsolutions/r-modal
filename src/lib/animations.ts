@@ -74,7 +74,7 @@ export const mDialogVariant = {
       },
     },
   }),
-  hide: ({ height }: any) => ({
+  hide: ({ totalHeight: height }: any) => ({
     y: height,
     opacity: 0,
     transition: {
@@ -91,32 +91,8 @@ export const mDialogVariant = {
       duration: 0.75,
     },
   },
-  initial: ({ height }: any) => ({
+  initial: ({ totalHeight: height }: any) => ({
     y: height,
-    opacity: 0,
-  }),
-}
-
-export const mDialogLineVariant = {
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'tween',
-      ease: [0.5, 1.12, 0, 1.01],
-      duration: 1,
-    },
-  },
-  hide: ({ hideY = 100 }: any = {}) => ({
-    y: hideY,
-    opacity: 0,
-    transition: {
-      ease: [0.5, 1.12, 0, 1.01],
-      duration: 0.5,
-    },
-  }),
-  initial: ({ initialY = 100 }: any = {}) => ({
-    y: initialY,
     opacity: 0,
   }),
 }
