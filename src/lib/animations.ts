@@ -62,23 +62,38 @@ export const dialogVariant = {
 }
 
 export const mDialogVariant = {
-  show: {
-    y: 0,
+  show: ({ y }: any) => ({
+    y,
+    opacity: 1,
     transition: {
       type: 'tween',
       ease: [0.5, 1.12, 0, 1.01],
       duration: 1,
+      opacity: {
+        duration: 0.2,
+      },
     },
-  },
-  hide: ({ hideY = 100 }: any = {}) => ({
-    y: hideY,
+  }),
+  hide: ({ height }: any) => ({
+    y: height,
+    opacity: 0,
     transition: {
       ease: [0.5, 1.12, 0, 1.01],
       duration: 0.5,
     },
   }),
-  initial: ({ initialY = 100 }: any = {}) => ({
-    y: initialY,
+  full: {
+    y: 0,
+    height: '100%',
+    transition: {
+      type: 'tween',
+      ease: [0.5, 1.12, 0, 1.01],
+      duration: 0.75,
+    },
+  },
+  initial: ({ height }: any) => ({
+    y: height,
+    opacity: 0,
   }),
 }
 

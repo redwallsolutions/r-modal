@@ -38,6 +38,7 @@ function App() {
             }}
             title="Cadastrar novo item"
             subTitle="Cadastre mais e mais items sem parar...."
+            fullscreen
           >
             <div style={{ height: 500 }}>
               <input />

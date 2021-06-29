@@ -41,7 +41,8 @@
         "wip",
         "init",
         "ui",
-        "prune"
+        "prune",
+        "refactoring"
       ]
     ]
   }

@@ -1,4 +1,5 @@
 import { ICommonProps } from '@redwallsolutions/common-interfaces-ts'
+import { useAnimation, useDragControls } from 'framer-motion'
 import React, {
   ReactElement,
   ReactNode,
@@ -7,7 +8,7 @@ import React, {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { useMedia } from 'react-use'
+import { useEffectOnce, useMedia, useWindowSize } from 'react-use'
 import { ThemeContext } from 'styled-components'
 import {
   dialogVariant,
@@ -18,13 +19,12 @@ import {
 } from './animations'
 import { CrossComponent as Close } from './cross'
 import { Fullscreen } from './fullscreen'
-import { LineComponent as Line } from './line'
+import { Line } from './styles'
 import {
   Container,
   Controllers,
   Dialog,
   DialogContent,
-  MDialog,
   Overlay,
   Title,
   SubTitle,
@@ -48,23 +48,14 @@ function usePortalContainer(): void {
   }, [])
 }
 
-interface RDialog {
-  dialog(props: { children: any }): ReactElement
-  mDialog(props: { children: any }): ReactElement
-  isWide: boolean
-  children: ReactNode
-}
-
-function ResponsiveDialog({ dialog, mDialog, isWide, children }: RDialog) {
-  return isWide ? dialog({ children }) : mDialog({ children })
-}
-
 interface Props extends ICommonProps {
   children?: any
   fullscreen?: boolean
   title?: string | ReactNode
   subTitle?: string | ReactNode
   onClose(): void
+  height?: number
+  width?: number
 }
 
 export default function ({
@@ -75,14 +66,22 @@ export default function ({
   fullscreen = false,
   title = null,
   subTitle = null,
+  height = 400,
+  width,
 }: Props) {
   usePortalContainer()
+  const dialogControls = useAnimation()
   const [innerFullscreen, setInnerFullscreen] = useState(fullscreen)
   const themeToApply = theme || React.useContext(ThemeContext) || defaultTheme
   const isWide = useMedia('(min-width: 649px)')
-  const toggleFullScreen = () => {
-    setInnerFullscreen(state => !state)
+  const { height: windowHeight } = useWindowSize()
+  const y = windowHeight - height
+  const contentHeight = (innerFullscreen ? windowHeight : height) - 55
+  const dragControls = useDragControls()
+  const startDrag = (event: any) => {
+    dragControls.start(event, { snapToCursor: false })
   }
+
   const isClosingRef = useRef<boolean>(false)
   const close = () => {
     if (!isClosingRef.current) {
@@ -90,21 +89,32 @@ export default function ({
       onClose()
     }
   }
+
   const dragStartPointer = useRef<number | null>(null)
   const mobileDragStart = (e: PointerEvent) => {
     dragStartPointer.current = e.y
   }
   const mobileDragEnd = ({ y }: PointerEvent) => {
-    if (y < dragStartPointer.current!) {
+    if (y < dragStartPointer.current! && !innerFullscreen) {
       setInnerFullscreen(true)
+    } else if (!innerFullscreen) {
+      onClose()
     } else {
-      if (!innerFullscreen) {
-        onClose()
-      } else {
-        setInnerFullscreen(false)
-      }
+      setInnerFullscreen(false)
     }
   }
+
+  useEffect(() => {
+    if (innerFullscreen) {
+      setTimeout(() => {
+        dialogControls.start('full')
+      }, 50)
+    } else {
+      setTimeout(() => {
+        dialogControls.start('show')
+      }, 50)
+    }
+  }, [innerFullscreen])
   const titleToApply =
     title && typeof title === 'string' ? (
       <Title theme={themeToApply} appearance={appearance}>
@@ -129,74 +139,30 @@ export default function ({
             onClick={close}
             data-testid="overlay"
           />
-          <ResponsiveDialog
-            isWide={isWide}
-            dialog={({ children: innerChildren }) => (
-              <Dialog
-                layoutId="dialog"
-                className={innerFullscreen ? 'fullscreen' : 'regular'}
-                width="650px"
-                height="480px"
-                variants={
-                  innerFullscreen ? { hide: dialogVariant.hide } : dialogVariant
-                }
-                appearance={appearance}
-                theme={themeToApply}
-              >
-                {titleToApply}
-                {subTitleToApply}
-                {isWide && (
-                  <Controllers layout layoutId="controllers">
-                    <Fullscreen
-                      onClick={toggleFullScreen}
-                      appearance={appearance}
-                      theme={themeToApply}
-                    />
-                    <Close
-                      onClick={close}
-                      variants={dialogVariant}
-                      appearance={appearance}
-                      theme={themeToApply}
-                    />
-                  </Controllers>
-                )}
-                <DialogContent isWide={isWide}>{innerChildren}</DialogContent>
-              </Dialog>
-            )}
-            mDialog={({ children: innerChildren }) => (
-              <MDialog
-                layoutId="mdialog"
-                className={innerFullscreen ? 'fullscreen' : 'regular'}
-                custom={{ initialY: 400, hideY: 400 }}
-                variants={innerFullscreen ? {} : mDialogVariant}
-                appearance={appearance}
-                theme={themeToApply}
-                height="400px"
-              >
-                {titleToApply}
-                {subTitleToApply}
-                <DialogContent style={{ marginTop: 0 }} isWide={isWide}>
-                  {innerChildren}
-                </DialogContent>
-              </MDialog>
-            )}
+          <Dialog
+            appearance={appearance}
+            theme={themeToApply}
+            height={windowHeight}
+            width={isWide ? `${width}px` : '100%'}
+            animate={dialogControls}
+            variants={isWide ? dialogVariant : mDialogVariant}
+            custom={{ y, height: windowHeight }}
+            drag="y"
+            dragControls={dragControls}
+            dragListener={false}
+            onDragStart={mobileDragStart}
+            onDragEnd={mobileDragEnd}
+            borderRadius={!isWide ? '25px 25px 0 0' : 'none'}
           >
-            {children}
-          </ResponsiveDialog>
-          {!isWide && (
-            <Line
-              custom={{ initialY: 400, hideY: 400 }}
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              onDragStart={mobileDragStart}
-              onDragEnd={mobileDragEnd}
-              height={'400px'}
-              appearance={appearance}
-              theme={themeToApply}
-              className={innerFullscreen ? 'fullscreen' : 'regular'}
-              variants={mDialogLineVariant}
-            />
-          )}
+            <Line onPointerDown={startDrag}>
+              <hr />
+            </Line>
+            <DialogContent height={contentHeight}>
+              {titleToApply}
+              {subTitleToApply}
+              {children}
+            </DialogContent>
+          </Dialog>
         </Container>,
         portalContainer!,
       )
