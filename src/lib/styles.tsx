@@ -66,6 +66,7 @@ export const Dialog = styled(motion.div)<ICommonProps & IDialog>`
   z-index: 667;
   border-radius: ${({ borderRadius }) => borderRadius};
   overflow: hidden;
+  box-shadow: 0 0 50px -10px rgba(0, 0, 0, 0.6);
 `
 
 export const Controllers = styled(motion.div)`
