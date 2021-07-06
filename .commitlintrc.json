@@ -42,7 +42,8 @@
         "init",
         "ui",
         "prune",
-        "refactoring"
+        "refactoring",
+        "ui"
       ]
     ]
   }
